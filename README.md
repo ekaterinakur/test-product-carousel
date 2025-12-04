@@ -4,7 +4,9 @@ A responsive e-commerce product carousel with an interactive shopping cart, buil
 
 ## Demo
 
-The application is running locally at: http://localhost:5173/
+**Live Demo:** [https://test-product-carousel.vercel.app/](https://test-product-carousel.vercel.app/)
+
+**Local Development:** http://localhost:5173/
 
 ## Tech Stack
 
