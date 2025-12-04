@@ -12,7 +12,7 @@ function App() {
 
       {/* Main Content */}
       <main>
-        <Container className="py-8">
+        <Container className="py-2">
           <ProductCarousel products={products} />
         </Container>
       </main>
