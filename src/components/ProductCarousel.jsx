@@ -19,6 +19,7 @@ const ITEMS_PER_SLIDE = {
 const ProductCarousel = ({ products }) => {
   const { addToCart } = useCart();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const getItemsPerSlide = () => {
     if (typeof window === 'undefined') return ITEMS_PER_SLIDE.DESKTOP;
@@ -46,31 +47,58 @@ const ProductCarousel = ({ products }) => {
   const totalSlides = Math.ceil(products.length / itemsPerSlide);
 
   const nextSlide = () => {
-    setCurrentIndex(prev => (prev + 1) % totalSlides);
+    if (!isTransitioning) {
+      setIsTransitioning(true);
+      setCurrentIndex(prev => (prev + 1) % totalSlides);
+      setTimeout(() => setIsTransitioning(false), 500);
+    }
   };
 
   const prevSlide = () => {
-    setCurrentIndex(prev => (prev - 1 + totalSlides) % totalSlides);
+    if (!isTransitioning) {
+      setIsTransitioning(true);
+      setCurrentIndex(prev => (prev - 1 + totalSlides) % totalSlides);
+      setTimeout(() => setIsTransitioning(false), 500);
+    }
   };
 
   const goToSlide = index => {
-    setCurrentIndex(index);
+    if (!isTransitioning && index !== currentIndex) {
+      setIsTransitioning(true);
+      setCurrentIndex(index);
+      setTimeout(() => setIsTransitioning(false), 500);
+    }
   };
-
-  const visibleProducts = products.slice(
-    currentIndex * itemsPerSlide,
-    currentIndex * itemsPerSlide + itemsPerSlide
-  );
 
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
       <div className="relative max-w-7xl mx-auto">
         {/* Carousel Container */}
-        <div className="overflow-hidden">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500">
-            {visibleProducts.map(product => (
-              <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
-            ))}
+        <div className="overflow-hidden pt-3 pb-6">
+          <div
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{
+              transform: `translateX(-${currentIndex * 100}%)`,
+            }}
+          >
+            {Array.from({ length: totalSlides }).map((_, slideIndex) => {
+              const slideProducts = products.slice(
+                slideIndex * itemsPerSlide,
+                slideIndex * itemsPerSlide + itemsPerSlide
+              );
+              return (
+                <div
+                  key={slideIndex}
+                  className="w-full flex-shrink-0"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {slideProducts.map(product => (
+                      <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -97,7 +125,7 @@ const ProductCarousel = ({ products }) => {
 
         {/* Dots Indicator */}
         {totalSlides > 1 && (
-          <div className="flex justify-center gap-2 mt-8">
+          <div className="flex justify-center gap-2 mt-6">
             {Array.from({ length: totalSlides }).map((_, index) => (
               <button
                 key={index}

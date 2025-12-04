@@ -2,7 +2,7 @@ import Button from './ui/Button';
 
 const ProductCard = ({ product, onAddToCart }) => {
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+    <div className="bg-white rounded-lg shadow-sm overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-md">
       <div className="aspect-square overflow-hidden bg-gray-100 flex items-center justify-center">
         <img
           src={product.image}
