@@ -6,8 +6,6 @@ A responsive e-commerce product carousel with an interactive shopping cart, buil
 
 **Live Demo:** [https://test-product-carousel.vercel.app/](https://test-product-carousel.vercel.app/)
 
-**Local Development:** http://localhost:5173/
-
 ## Tech Stack
 
 - **React 18.3.1**: Component-based UI library with Context API for state management
